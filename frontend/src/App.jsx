@@ -3,7 +3,11 @@ import './App.css'
 import { getMovies } from './redux/moviesRelated/moviesHandle';
 import Header from './components/Header';
 import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay } from "swiper/modules";
 import "swiper/css";
+import { Link, Route, Routes } from 'react-router';
+import MovieDetails from './pages/movieDetails';
+
 
 function App() {
 
@@ -28,16 +32,30 @@ function App() {
 
     <Header />
 
+    {/* //TODO CRIAR PRIMEIRA LISTA/CARROSEL COMO RECOMENDAÇÕES, MAS POR ENQUANTO DEIXE SEM */}
+
       <div className="w-full">
-        <section className='movies'>
+
+        <span className='flex w-full h-40 items-center justify-center text-8xl bg-gray-800 text-neutral-50 mb-5 mt-5'>
+          Movies
+        </span>
+
+        <section className='allMovies p-3'>
+            
+            <h1 className='w-full flex items-center justify-center pb-3 text-5xl'>Popular Movies</h1>
+            
             <Swiper
-              spaceBetween={50}
+              modules={[Autoplay]}
+              spaceBetween={10}
               slidesPerView={3}
+              autoplay
             >
               {allMovies.map((movie) => (
                 <SwiperSlide key={movie.id}>
+                  <Link to={`/movie/${movie.id}`}>
                   <img src={`https://image.tmdb.org/t/p/w200${movie.poster_path}`} alt="Movie image" />
                   <p>Titulo: {movie.title}</p>
+                  </Link>
                 </SwiperSlide>
               ))}
               </Swiper>
@@ -51,7 +69,11 @@ function App() {
             ))}
           </ul> */}
         </section>
+
+
+
       </div>
+
     </>
   )
 }
