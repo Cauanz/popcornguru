@@ -1,9 +1,10 @@
 import { useParams } from "react-router"
 import Header from "../components/Header";
 import { useEffect, useState } from "react";
-import { getCast, getMovie, getSimilar } from "../redux/moviesRelated/moviesHandle";
+import { getCast, getMovie, getProviders, getSimilar } from "../redux/moviesRelated/moviesHandle";
 // import { AiFillStar } from "react-icons/ai";
 import { IoPlayOutline, IoAdd, IoStar } from "react-icons/io5";
+import FlyoutMenu from "../components/FlyoutMenu";
 
 export default function MovieDetails() {
 
@@ -13,6 +14,7 @@ export default function MovieDetails() {
   const [movieDetails, setMovieDetails] = useState([]);
   const [similarMovies, setSimilarMovies] = useState([]);
   const [cast, setCast] = useState([]);
+  const [providers, setProviders] = useState([]);
 
   useEffect(() => {
     //USAR REDUX PARA EVITAR ISSO AQUI
@@ -28,18 +30,24 @@ export default function MovieDetails() {
       setCast(await getCast(movieId));
     }
 
+    async function fetchProviders() {
+      setProviders(await getProviders(movieId));
+    }
+
     fetchMovie();
     fetchSimilar();
     fetchCast();
+    fetchProviders();
   }, [movieId]);
 
-
-  console.log(similarMovies);
+  console.log(movieDetails);
 
   return (
     <>
 
     <Header />
+
+    //TODO COMEÇAR A TRABALHAR NO LOGIN/REGISTRO
 
     {/* <div className="p-20 w-full flex flex-col items-center justify-center">
 
@@ -78,15 +86,16 @@ export default function MovieDetails() {
         <p className="text-[#b2b2b2] mb-4">
           {new Date(movieDetails.release_date).getFullYear()} • 
           {movieDetails.genres && movieDetails.genres.map((genre) => genre.name + " " )} • 
-          {/* {movieDetails.runtime / 60} //TODO - CONCERTAR TEMPO DE DURAÇÃO */}
+          {Math.floor(movieDetails.runtime / 60)}h{Math.floor(movieDetails.runtime % 60)}min
         </p>
           <div className="flex space-x-4 mb-4">
-            <button className="bg-[#00b4d8] hover:bg-[#0090b0] text-white">
+            {/* <button className="bg-[#00b4d8] hover:bg-[#0090b0] text-white p-2 rounded-xl flex items-center justify-center">
               <IoPlayOutline className="mr-2 h-4 w-4" /> Assistir Agora
-            </button>
-            <button className="text-white border-white hover:bg-white hover:text-[#2c1b47]">
+            </button> */}
+            <button className="text-white border-white hover:bg-white hover:text-[#2c1b47] p-2 rounded-xl flex items-center justify-center">
               <IoAdd className="mr-2 h-4 w-4" /> Adicionar à Lista
             </button>
+            <FlyoutMenu title={"Onde assistir?"} items={providers.buy} />
           </div>
         </div>
       </div>
@@ -119,9 +128,12 @@ export default function MovieDetails() {
               <IoStar className="h-6 w-6 text-[#00b4d8] fill-current" />
               <span className="ml-2 text-2xl font-bold">8.8</span>
             </div>
-            {/* <input type="radio" value={88} min={0} max={100} className="w-full bg-[#3d2a5b]" /> //TODO - CRIAR BARRA PARA AVALIAÇÕES */}
+            <span className="w-full h-4 bg-amber-300 relative">
+              <span className="h-4 bg-blue-400 absolute" style={{ width: `${movieDetails.vote_average * 10}%` }}>
+              </span>
+            </span>
           </div>
-          <p className="text-[#b2b2b2] mb-6">Baseado em 2.1M avaliações</p>
+          <p className="text-[#b2b2b2] mb-6">Baseado em {movieDetails.vote_count} avaliações</p>
         </div>
 
         <div>
@@ -136,7 +148,7 @@ export default function MovieDetails() {
                 />
                 <div>
                   <h3 className="font-semibold">{movie.title}</h3>
-                  {/* <p className="text-[#b2b2b2] text-sm">{new Date(movie.release_date).getFullYear()} • Sci-Fi</p>  //TODO COLCAR O GENERO, MAS ELE REQUER QUE PROCUREMOS PELO ID DO GENERO */}
+                  <p className="text-[#b2b2b2] text-sm">{new Date(movie.release_date).getFullYear()} • Sci-Fi</p>
                   <div className="flex items-center mt-2">
                     <IoStar className="h-4 w-4 text-[#00b4d8] fill-current" />
                     <span className="ml-1 text-sm">{(movie.vote_average).toFixed(1)}</span>
