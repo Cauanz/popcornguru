@@ -3,6 +3,7 @@ import axios from "axios";
 export async function getMovies() {
   //TODO - TALVEZ ALTERAR PARA RECEBER PARAMETRO DE TAG (POPULAR, TOP RATED ETC...)
   try {
+    // const url = `${import.meta.env.VITE_BACKEND_URL}/getMovies` //! EXEMPLO DE COMO VAI FICAR AS ROTAS
     const url = `https://api.themoviedb.org/3/movie/popular?language=pt-BR&api_key=${import.meta.env.VITE_TMDB_APIKEY}`;
     const response = await axios.get(url)
     console.log(response.data)
