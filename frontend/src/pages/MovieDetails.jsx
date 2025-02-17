@@ -19,19 +19,23 @@ export default function MovieDetails() {
   useEffect(() => {
     //USAR REDUX PARA EVITAR ISSO AQUI
     async function fetchMovie() {
-      setMovieDetails(await getMovie(movieId));
+      const response = await getMovie(movieId);
+      setMovieDetails(response.data);
     }
-
+    
     async function fetchSimilar() {
-      setSimilarMovies(await getSimilar(movieId));
+      const response = await getSimilar(movieId);
+      setSimilarMovies(response.data);
     }
-
+    
     async function fetchCast() {
-      setCast(await getCast(movieId));
+      const response = await getCast(movieId);
+      setCast(response.data);
     }
-
+    
     async function fetchProviders() {
-      setProviders(await getProviders(movieId));
+      const response = await getProviders(movieId);
+      setProviders(response.data);
     }
 
     fetchMovie();
@@ -46,8 +50,6 @@ export default function MovieDetails() {
     <>
 
     <Header />
-
-    //TODO COMEÇAR A TRABALHAR NO LOGIN/REGISTRO
 
     {/* <div className="p-20 w-full flex flex-col items-center justify-center">
 
@@ -77,12 +79,12 @@ export default function MovieDetails() {
     <div className="min-h-screen bg-[#2c1b47] text-white">
       {/* Hero Section */}
       <div
-        className="relative h-[50vh] md:h-[60vh] bg-cover bg-center"
+        className="relative h-[50vh] md:h-[60vh] bg-cover bg-top"
         style={{ backgroundImage: `url(https://image.tmdb.org/t/p/w400${movieDetails.poster_path})` }}
       >
         <div className="absolute inset-0 bg-gradient-to-t from-[#2c1b47] to-transparent"></div>
         <div className="absolute bottom-0 left-0 p-6 md:p-10">
-          <h1 className="text-4xl md:text-6xl font-bold mb-2">{movieDetails.title}</h1>
+          {/* <h1 className="text-4xl md:text-6xl font-bold mb-2">{movieDetails.title}</h1> */}
         <p className="text-[#b2b2b2] mb-4">
           {new Date(movieDetails.release_date).getFullYear()} • 
           {movieDetails.genres && movieDetails.genres.map((genre) => genre.name + " " )} • 
