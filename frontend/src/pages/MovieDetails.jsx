@@ -1,9 +1,9 @@
-import { useParams } from "react-router"
+import { Link, useParams } from "react-router"
 import Header from "../components/Header";
 import { useEffect, useState } from "react";
 import { getCast, getMovie, getProviders, getSimilar } from "../redux/moviesRelated/moviesHandle";
 // import { AiFillStar } from "react-icons/ai";
-import { IoPlayOutline, IoAdd, IoStar } from "react-icons/io5";
+import { IoAdd, IoStar } from "react-icons/io5";
 import FlyoutMenu from "../components/FlyoutMenu";
 
 export default function MovieDetails() {
@@ -84,7 +84,7 @@ export default function MovieDetails() {
       >
         <div className="absolute inset-0 bg-gradient-to-t from-[#2c1b47] to-transparent"></div>
         <div className="absolute bottom-0 left-0 p-6 md:p-10">
-          {/* <h1 className="text-4xl md:text-6xl font-bold mb-2">{movieDetails.title}</h1> */}
+          <h1 className="text-4xl md:text-6xl font-bold mb-2">{movieDetails.title}</h1>
         <p className="text-[#b2b2b2] mb-4">
           {new Date(movieDetails.release_date).getFullYear()} • 
           {movieDetails.genres && movieDetails.genres.map((genre) => genre.name + " " )} • 
@@ -142,7 +142,8 @@ export default function MovieDetails() {
           <h2 className="text-2xl font-semibold mb-4">Filmes Relacionados</h2>
           <div className="space-y-4">
             {similarMovies.slice(0, 3).map((movie) => (
-              <div key={movie.id} className="bg-[#3d2a5b] p-4 rounded-lg flex items-center">
+              <Link to={`/movie/${movie.id}`} key={movie.id}>
+              <div className="bg-[#3d2a5b] p-4 rounded-lg flex items-center">
                 <img
                   src={`https://image.tmdb.org/t/p/w400/${movie.poster_path}`}
                   alt={movie.title}
@@ -157,6 +158,7 @@ export default function MovieDetails() {
                   </div>
                 </div>
               </div>
+              </Link>
             ))}
           </div>
         </div>
